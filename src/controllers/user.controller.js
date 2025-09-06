@@ -17,7 +17,7 @@ const registerUser = asyncHandler( async (req,res) =>{
 
     // form or json data is in body
     const {fullName,email,username,password} = req.body
-    console.log("email: ",email)
+    // console.log("email: ",email)
 
     // if(fullName === ""){
     //     throw new ApiError(400,"fullName is required")
@@ -38,7 +38,12 @@ const registerUser = asyncHandler( async (req,res) =>{
 
     // from multer
     const avatarLocalPath = req.files?.avatar[0]?.path
-    const coverImageLocalPath = req.files?.coverImage[0]?.path
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path
+
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
 
     if(!avatarLocalPath){
         throw new ApiError(400,"avatar file is required")
@@ -54,7 +59,7 @@ const registerUser = asyncHandler( async (req,res) =>{
     const user = await User.create({
         fullName,
         avatar : avatar.url,
-        coverImage : coverImage.url || "",
+        coverImage : coverImage?.url || "",
         email,
         password,
         username : username.toLowerCase()
