@@ -61,6 +61,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password,this.password)
 }
 
+// short lived -> once logged in
 userSchema.methods.generateAccessToken = function() {
     jwt.sign(
         // payload
@@ -76,6 +77,7 @@ userSchema.methods.generateAccessToken = function() {
         }
     )
 }
+// long lived -> can use for login
 userSchema.methods.generateRefershToken = function() {
     jwt.sign(
         // payload -> keep paylod less because it keeps refreshing
