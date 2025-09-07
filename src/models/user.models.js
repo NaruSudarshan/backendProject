@@ -63,7 +63,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
 
 // short lived -> once logged in
 userSchema.methods.generateAccessToken = function() {
-    jwt.sign(
+    return jwt.sign(
         // payload
         {
             _id :this._id,
@@ -79,7 +79,7 @@ userSchema.methods.generateAccessToken = function() {
 }
 // long lived -> can use for login
 userSchema.methods.generateRefershToken = function() {
-    jwt.sign(
+    return jwt.sign(
         // payload -> keep paylod less because it keeps refreshing
         {
             _id :this._id,
