@@ -8,7 +8,9 @@ import { changeCurrentPassword,
         registerUser, 
         updateAccountDetails, 
         updateAvatar, 
-        updateCoverImage } 
+        updateCoverImage,
+        getUserChannelProfile,
+        getWatchHistory} 
 from '../controllers/user.controller.js'
 
 const router = Router()
