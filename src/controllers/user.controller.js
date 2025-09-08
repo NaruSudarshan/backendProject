@@ -4,6 +4,7 @@ import { User } from '../models/user.models.js'
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from 'jsonwebtoken'
+import mongoose from "mongoose";
 
 const registerUser = asyncHandler( async (req,res) =>{
     // get details from frontend
@@ -262,7 +263,7 @@ const updateAccountDetails = asyncHandler(async(req,res) => {
         throw new ApiError(400,"all fields are required")
     }
 
-    const user = User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -338,7 +339,7 @@ const updateCoverImage = asyncHandler( async(req,res) => {
 })
 
 const getUserChannelProfile = asyncHandler(async(req, res) => {
-    const {username} = req.params
+    const {username} = req.params  // channel name 
 
     if (!username?.trim()) {
         throw new ApiError(400, "username is missing")
@@ -376,6 +377,7 @@ const getUserChannelProfile = asyncHandler(async(req, res) => {
                 },
                 isSubscribed: {
                     $cond: {
+                        // the user who is requesting this route has subscribed to the channel in params or no 
                         if: {$in: [req.user?._id, "$subscribers.subscriber"]},
                         then: true,
                         else: false
